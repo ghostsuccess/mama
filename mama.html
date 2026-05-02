@@ -8,15 +8,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --amber:#e8a95a;
-  --amber2:#c47d2e;
-  --deep:#080604;
-  --dark:#130e07;
-  --gold:#f0cc80;
-  --gold2:#d4a84b;
-  --cream:#fdf8f0;
-  --warm:#f5e6c8;
-  --earth:#3d2408;
+  --amber:#e8a95a;--amber2:#c47d2e;
+  --deep:#080604;--dark:#130e07;
+  --gold:#f0cc80;--gold2:#d4a84b;
+  --cream:#fdf8f0;--warm:#f5e6c8;--earth:#3d2408;
 }
 html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--deep);color:var(--cream);cursor:none}
 
@@ -24,13 +19,9 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 #cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--amber);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen}
 #cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(232,169,90,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s}
 
-/* ── BG ── */
+/* ── BG + CANVAS ── */
 #canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
-.bg{position:fixed;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 70% 55% at 15% 85%,rgba(61,36,8,.85) 0%,transparent 65%),
-    radial-gradient(ellipse 50% 45% at 85% 15%,rgba(232,169,90,.1) 0%,transparent 55%),
-    radial-gradient(ellipse 100% 100% at 50% 50%,#130e07 0%,#080604 100%)}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 55% at 15% 85%,rgba(61,36,8,.85) 0%,transparent 65%),radial-gradient(ellipse 50% 45% at 85% 15%,rgba(232,169,90,.1) 0%,transparent 55%),radial-gradient(ellipse 100% 100% at 50% 50%,#130e07 0%,#080604 100%)}
 .bg::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.3;pointer-events:none}
 
 /* ── MUSIC ── */
@@ -60,7 +51,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 /* ── GLASS ── */
 .glass{position:relative;text-align:center;border-radius:32px;background:rgba(255,248,235,.025);border:1px solid rgba(232,169,90,.15);backdrop-filter:blur(40px) saturate(1.4);box-shadow:0 0 0 1px rgba(255,255,255,.03) inset,0 0 100px rgba(232,169,90,.06),0 40px 80px rgba(0,0,0,.65);max-width:480px;width:92%;padding:56px 48px;animation:rise 1.4s cubic-bezier(.22,.68,0,1.1) both}
 @keyframes rise{from{opacity:0;transform:translateY(32px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.glass::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(to right,transparent,rgba(232,169,90,.5),transparent);border-radius:1px}
+.glass::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(to right,transparent,rgba(232,169,90,.5),transparent)}
 .glass .icon{font-size:2.4rem;margin-bottom:20px;display:block;animation:floatIcon 4s ease-in-out infinite}
 @keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .glass h2{font-family:'Playfair Display',serif;font-weight:400;font-style:italic;font-size:clamp(1.5rem,4vw,2.1rem);color:var(--cream);line-height:1.35;margin-bottom:10px}
@@ -100,20 +91,20 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 .env-flap{position:absolute;top:0;left:0;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-top:28px solid rgba(232,169,90,.15);transform-origin:top center;transition:transform .8s cubic-bezier(.22,.68,0,1.1)}
 .env-flap.open{transform:rotateX(180deg)}
 .env-lines{position:absolute;bottom:12px;left:12px;right:12px;display:flex;flex-direction:column;gap:5px}
-.env-line{height:1px;background:rgba(232,169,90,.2);border-radius:1px}
+.env-line{height:1px;background:rgba(232,169,90,.2)}
 .env-line:last-child{width:60%}
 .env-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.1rem;transition:opacity .5s}
 .env-seal.hidden{opacity:0}
 .input-wrap{margin-bottom:16px}
 .input-wrap input{width:100%;padding:15px 22px;border-radius:50px;border:1px solid rgba(232,169,90,.25);background:rgba(255,255,255,.04);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.95rem;letter-spacing:.15em;text-align:center;outline:none;cursor:none;transition:border-color .3s,box-shadow .3s}
-.input-wrap input:focus{border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,169,90,.12),0 0 20px rgba(232,169,90,.08)}
+.input-wrap input:focus{border-color:var(--amber);box-shadow:0 0 0 4px rgba(232,169,90,.12)}
 .input-wrap input::placeholder{color:rgba(245,230,200,.25)}
 .btn-open{display:inline-flex;align-items:center;gap:11px;padding:15px 40px;border:none;border-radius:50px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:white;font-family:'DM Sans',sans-serif;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;cursor:none;margin-top:8px;transition:transform .28s,box-shadow .28s;box-shadow:0 8px 28px rgba(232,169,90,.4);position:relative;overflow:hidden}
 .btn-open::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent)}
 .btn-open:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 36px rgba(232,169,90,.55)}
 .err{margin-top:14px;font-size:.74rem;letter-spacing:.1em;color:rgba(245,230,200,.5);height:18px}
 
-/* ── MAIN ── */
+/* ── MAIN SCREEN ── */
 #screenMain{position:fixed;inset:0;overflow-y:auto;z-index:5;opacity:0;transform:translateY(20px);transition:opacity 1.6s ease,transform 1.6s ease;display:none}
 #screenMain::-webkit-scrollbar{width:3px}
 #screenMain::-webkit-scrollbar-thumb{background:rgba(232,169,90,.3);border-radius:10px}
@@ -148,21 +139,41 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 .answers-reveal{max-width:700px;width:100%;margin-top:50px;opacity:0;animation:fadeIn 1s 3s ease forwards;text-align:center}
 .reveal-label{font-size:.64rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(240,204,128,.45);margin-bottom:24px;display:block}
 .answers-cards{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.answer-pill{background:rgba(255,248,235,.02);border:1px solid rgba(240,204,128,.15);border-radius:20px;padding:24px 30px;flex:1;min-width:185px;max-width:310px;backdrop-filter:blur(12px);box-shadow:0 10px 40px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.02) inset;transition:transform .3s,box-shadow .3s}
+.answer-pill{background:rgba(255,248,235,.02);border:1px solid rgba(240,204,128,.15);border-radius:20px;padding:24px 30px;flex:1;min-width:185px;max-width:310px;backdrop-filter:blur(12px);box-shadow:0 10px 40px rgba(0,0,0,.3);transition:transform .3s,box-shadow .3s}
 .answer-pill:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 30px rgba(240,204,128,.08)}
 .a-icon{font-size:1.6rem;display:block;margin-bottom:12px}
 .a-label{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(240,204,128,.45);margin-bottom:10px;display:block}
 .a-value{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:rgba(253,248,240,.88);line-height:1.55}
 
-/* ── HER REPLY (Mama's turn) ── */
-.her-reply-section{max-width:700px;width:100%;margin-top:60px;opacity:0;animation:fadeIn 1s 3.6s ease forwards}
+/* ══════════════════════════════
+   ── PRAYER SECTION ──
+══════════════════════════════ */
+.prayer-section{max-width:700px;width:100%;margin-top:60px;opacity:0;animation:fadeIn 1s 3.4s ease forwards}
+.prayer-header{display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:32px}
+.prayer-line{flex:1;max-width:80px;height:1px;background:linear-gradient(to right,transparent,rgba(240,204,128,.25))}
+.prayer-line.rev{background:linear-gradient(to left,transparent,rgba(240,204,128,.25))}
+.prayer-label{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(240,204,128,.45)}
+
+.prayer-card{position:relative;background:rgba(255,248,235,.018);border:1px solid rgba(240,204,128,.12);border-radius:24px;padding:48px 52px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.02) inset;text-align:center;overflow:hidden}
+/* candle glow */
+.prayer-card::after{content:'';position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(240,204,128,.07),transparent 70%);pointer-events:none;animation:candleGlow 4s ease-in-out infinite}
+@keyframes candleGlow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.15)}}
+
+.prayer-icon{font-size:2rem;display:block;margin-bottom:20px;animation:floatIcon 5s ease-in-out infinite}
+.prayer-title{font-family:'Pinyon Script',cursive;font-size:2rem;color:rgba(253,248,240,.7);margin-bottom:28px;line-height:1.2}
+.prayer-text{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2vw,1.15rem);line-height:2.2;color:rgba(253,248,240,.72);margin-bottom:24px}
+.prayer-text em{color:var(--gold);font-style:normal}
+.prayer-amen{font-family:'Pinyon Script',cursive;font-size:1.8rem;color:rgba(240,204,128,.55);margin-top:10px;display:block}
+
+/* ── MAMA'S REPLY ── */
+.her-reply-section{max-width:700px;width:100%;margin-top:60px;opacity:0;animation:fadeIn 1s 3.8s ease forwards}
 .chapter-label{display:flex;align-items:center;gap:14px;margin-bottom:32px;justify-content:center}
 .chapter-line{flex:1;max-width:80px;height:1px;background:linear-gradient(to right,transparent,rgba(240,204,128,.3))}
 .chapter-line.rev{background:linear-gradient(to left,transparent,rgba(240,204,128,.3))}
 .chapter-text{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(240,204,128,.5)}
 .reply-card{position:relative;background:rgba(255,248,235,.02);border:1px solid rgba(240,204,128,.12);border-radius:22px;padding:44px 50px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.02) inset;transition:border-color .4s,box-shadow .4s}
 .reply-card::before{content:'\201C';position:absolute;top:-12px;left:34px;font-family:'Playfair Display',serif;font-size:7rem;color:var(--gold);opacity:.1;line-height:1;pointer-events:none}
-.reply-card.editing{border-color:rgba(240,204,128,.3);box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 40px rgba(240,204,128,.06),0 0 0 1px rgba(255,255,255,.02) inset}
+.reply-card.editing{border-color:rgba(240,204,128,.3);box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 40px rgba(240,204,128,.06)}
 #defaultReply{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2vw,1.18rem);line-height:2;color:rgba(253,248,240,.85);white-space:pre-wrap}
 #customReplyInput{display:none;width:100%;background:transparent;border:none;outline:none;resize:none;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2vw,1.18rem);line-height:2;color:rgba(253,248,240,.88);min-height:160px;cursor:none;caret-color:var(--gold)}
 #customReplyInput::placeholder{color:rgba(245,230,200,.2)}
@@ -182,53 +193,117 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 .btn-cancel-edit:hover{color:rgba(253,248,240,.6)}
 #charCount{font-size:.62rem;letter-spacing:.1em;color:rgba(245,230,200,.2);text-align:right;margin-top:8px;transition:color .3s;display:none}
 #charCount.warn{color:rgba(232,169,90,.5)}
-.reply-saved-tag{display:none;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,204,128,.5);text-align:center;margin-top:14px;animation:fadeIn .6s ease}
+.reply-saved-tag{display:none;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,204,128,.5);text-align:center;margin-top:14px}
 
 /* ── FELT BTN ── */
-.felt-btn-wrap{margin-top:44px;opacity:0;animation:fadeIn 1s 4.8s ease forwards;text-align:center}
-.felt-btn{padding:16px 44px;border:1px solid rgba(240,204,128,.35);border-radius:50px;background:transparent;color:rgba(240,204,128,.8);font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;letter-spacing:.08em;cursor:none;transition:all .35s ease;position:relative;overflow:hidden}
+.felt-btn-wrap{margin-top:48px;opacity:0;animation:fadeIn 1s 4.8s ease forwards;text-align:center}
+.felt-btn{padding:16px 50px;border:1px solid rgba(240,204,128,.35);border-radius:50px;background:transparent;color:rgba(240,204,128,.8);font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;letter-spacing:.08em;cursor:none;transition:all .35s ease;position:relative;overflow:hidden}
 .felt-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,204,128,.08),transparent);opacity:0;transition:opacity .35s}
 .felt-btn:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 40px rgba(240,204,128,.15),0 8px 30px rgba(0,0,0,.3);transform:translateY(-3px)}
 .felt-btn:hover::before{opacity:1}
-.felt-btn.clicked{background:linear-gradient(135deg,rgba(240,204,128,.2),rgba(232,169,90,.15));border-color:var(--gold);color:var(--gold);box-shadow:0 0 60px rgba(240,204,128,.25);pointer-events:none}
-.sign-off{margin-top:44px;font-family:'Pinyon Script',cursive;font-size:2rem;color:rgba(240,204,128,.55);text-align:center;opacity:0;animation:fadeIn 1s 5.2s ease forwards}
+.felt-btn.clicked{background:linear-gradient(135deg,rgba(240,204,128,.2),rgba(232,169,90,.15));border-color:var(--gold);color:var(--gold);pointer-events:none}
+.sign-off{margin-top:44px;font-family:'Pinyon Script',cursive;font-size:2rem;color:rgba(240,204,128,.5);text-align:center;opacity:0;animation:fadeIn 1s 5.2s ease forwards}
 
-/* ── SHARE OVERLAY ── */
-#shareOverlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:rgba(8,6,4,.93);backdrop-filter:blur(24px);opacity:0;pointer-events:none;transition:opacity .8s ease;overflow-y:auto;padding:24px}
+/* ══════════════════════════════
+   ── PHOTO WALL OVERLAY ──
+══════════════════════════════ */
+#photoWall{position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,6,4,.96);backdrop-filter:blur(28px);opacity:0;pointer-events:none;transition:opacity .8s ease;padding:24px}
+#photoWall.show{opacity:1;pointer-events:all}
+
+.wall-title{font-family:'Pinyon Script',cursive;font-size:clamp(2rem,6vw,3.5rem);color:var(--cream);text-align:center;margin-bottom:8px;transform:translateY(20px);opacity:0;transition:all .8s .2s ease}
+#photoWall.show .wall-title{transform:translateY(0);opacity:1}
+.wall-sub{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(240,204,128,.4);text-align:center;margin-bottom:44px;transform:translateY(10px);opacity:0;transition:all .8s .4s ease}
+#photoWall.show .wall-sub{transform:translateY(0);opacity:1}
+
+.wall-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:680px;width:100%;margin-bottom:44px}
+
+.wall-photo-wrap{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:1;transform:scale(.85) translateY(30px);opacity:0;transition:all .7s ease;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#photoWall.show .wall-photo-wrap:nth-child(1){transform:scale(1) translateY(0);opacity:1;transition-delay:.4s}
+#photoWall.show .wall-photo-wrap:nth-child(2){transform:scale(1) translateY(0);opacity:1;transition-delay:.6s}
+#photoWall.show .wall-photo-wrap:nth-child(3){transform:scale(1) translateY(0);opacity:1;transition-delay:.8s}
+
+.wall-photo-wrap::before{content:'';position:absolute;inset:0;border:1px solid rgba(240,204,128,.2);border-radius:20px;z-index:1;pointer-events:none}
+.wall-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(8,6,4,.6));z-index:1;pointer-events:none}
+.wall-photo{width:100%;height:100%;object-fit:cover;display:block;filter:sepia(20%) brightness(.9)}
+
+/* corner ornaments */
+.wall-corner{position:absolute;width:18px;height:18px;opacity:.4;z-index:2}
+.wall-corner.tl{top:8px;left:8px;border-top:1px solid var(--gold);border-left:1px solid var(--gold)}
+.wall-corner.tr{top:8px;right:8px;border-top:1px solid var(--gold);border-right:1px solid var(--gold)}
+.wall-corner.bl{bottom:8px;left:8px;border-bottom:1px solid var(--gold);border-left:1px solid var(--gold)}
+.wall-corner.br{bottom:8px;right:8px;border-bottom:1px solid var(--gold);border-right:1px solid var(--gold)}
+
+.wall-btn{padding:14px 44px;border-radius:50px;border:1px solid rgba(240,204,128,.35);background:transparent;color:rgba(240,204,128,.8);font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;cursor:none;transition:all .3s;transform:translateY(10px);opacity:0;transition:all .7s 1.1s ease}
+#photoWall.show .wall-btn{transform:translateY(0);opacity:1}
+.wall-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(240,204,128,.06);box-shadow:0 0 30px rgba(240,204,128,.15);transform:translateY(-2px)}
+
+/* ══════════════════════════════
+   ── SHARE OVERLAY ──
+══════════════════════════════ */
+#shareOverlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:rgba(8,6,4,.95);backdrop-filter:blur(28px);opacity:0;pointer-events:none;transition:opacity .9s ease;overflow-y:auto;padding:24px}
 #shareOverlay.show{opacity:1;pointer-events:all}
-.share-card{max-width:440px;width:100%;border-radius:28px;background:rgba(255,248,235,.025);border:1px solid rgba(240,204,128,.2);backdrop-filter:blur(30px);padding:48px 40px;text-align:center;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset,0 0 80px rgba(240,204,128,.06),0 40px 80px rgba(0,0,0,.55);transform:scale(.9) translateY(20px);transition:transform .8s cubic-bezier(.22,.68,0,1.1);position:relative}
+
+/* portrait frame card */
+.share-card{max-width:460px;width:100%;border-radius:4px;background:rgba(30,20,8,.9);position:relative;padding:0;transform:scale(.92) translateY(16px);transition:transform .9s cubic-bezier(.22,.68,0,1.1);overflow:hidden}
 #shareOverlay.show .share-card{transform:scale(1) translateY(0)}
-.share-card::before{content:'';position:absolute;top:0;left:25%;right:25%;height:1px;background:linear-gradient(to right,transparent,rgba(240,204,128,.5),transparent)}
-.share-rose{font-size:2rem;display:block;margin-bottom:16px;animation:floatIcon 4s ease-in-out infinite}
-.share-names{font-family:'Pinyon Script',cursive;font-size:1.8rem;color:var(--cream);margin-bottom:4px;line-height:1.3}
-.share-names span{color:var(--amber)}
-.share-names .amp{color:rgba(240,204,128,.6);font-size:1.4rem;margin:0 8px}
-.share-divider{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold2),transparent);margin:16px auto}
-.share-section-label{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px}
-.share-section-label.his{color:rgba(232,169,90,.5)}
-.share-section-label.hers{color:rgba(240,204,128,.5)}
-.share-his-quote,.share-her-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:.92rem;line-height:1.75;padding:0 4px}
-.share-his-quote{color:rgba(253,248,240,.7)}
-.share-her-quote{color:rgba(240,204,128,.85)}
-.share-stamp{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,204,128,.3);margin:20px 0 8px}
-.share-hint{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,230,200,.25);margin-bottom:28px}
-.share-close{padding:12px 32px;border-radius:50px;border:1px solid rgba(232,169,90,.25);background:transparent;color:rgba(245,230,200,.45);font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s}
-.share-close:hover{border-color:var(--amber);color:var(--amber);background:rgba(232,169,90,.08)}
+
+/* outer gold frame */
+.share-card::before{content:'';position:absolute;inset:8px;border:1px solid rgba(240,204,128,.25);border-radius:2px;z-index:0;pointer-events:none}
+.share-card::after{content:'';position:absolute;inset:14px;border:1px solid rgba(240,204,128,.1);border-radius:1px;z-index:0;pointer-events:none}
+
+/* corner ornaments on share card */
+.sc-corner{position:absolute;width:28px;height:28px;z-index:3}
+.sc-corner.tl{top:4px;left:4px;border-top:2px solid rgba(240,204,128,.4);border-left:2px solid rgba(240,204,128,.4)}
+.sc-corner.tr{top:4px;right:4px;border-top:2px solid rgba(240,204,128,.4);border-right:2px solid rgba(240,204,128,.4)}
+.sc-corner.bl{bottom:4px;left:4px;border-bottom:2px solid rgba(240,204,128,.4);border-left:2px solid rgba(240,204,128,.4)}
+.sc-corner.br{bottom:4px;right:4px;border-bottom:2px solid rgba(240,204,128,.4);border-right:2px solid rgba(240,204,128,.4)}
+
+.share-inner{padding:44px 36px;position:relative;z-index:1;text-align:center}
+
+/* top glow */
+.share-glow{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(240,204,128,.12),transparent 70%);margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+.share-glow-icon{font-size:2.8rem;animation:floatIcon 5s ease-in-out infinite}
+
+.share-title{font-family:'Pinyon Script',cursive;font-size:2.6rem;color:var(--cream);line-height:1.2;margin-bottom:4px}
+.share-title span{color:var(--amber)}
+.share-subtitle{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(240,204,128,.35);margin-bottom:28px}
+
+/* ornamental divider */
+.share-ornament{display:flex;align-items:center;gap:12px;margin:20px 0}
+.share-orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(240,204,128,.25))}
+.share-orn-line.rev{background:linear-gradient(to left,transparent,rgba(240,204,128,.25))}
+.share-orn-center{font-size:.75rem;color:rgba(240,204,128,.4)}
+
+/* quote blocks */
+.share-block{text-align:left;margin-bottom:6px}
+.share-who{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:8px}
+.share-who.daughter{color:rgba(232,169,90,.5)}
+.share-who.mama{color:rgba(240,204,128,.5)}
+.share-quote-text{font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;line-height:1.8}
+.share-quote-text.daughter{color:rgba(253,248,240,.65)}
+.share-quote-text.mama{color:rgba(240,204,128,.8)}
+
+.share-stamp{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,204,128,.25);margin:20px 0 6px;text-align:center}
+.share-hint{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,230,200,.2);margin-bottom:24px;text-align:center}
+.share-close{padding:12px 36px;border-radius:50px;border:1px solid rgba(232,169,90,.25);background:transparent;color:rgba(245,230,200,.4);font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s}
+.share-close:hover{border-color:var(--amber);color:var(--amber);background:rgba(232,169,90,.07)}
 
 /* ── BURST ── */
-#burst{position:fixed;inset:0;pointer-events:none;z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s}
+#burst{position:fixed;inset:0;pointer-events:none;z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s}
 #burst.show{opacity:1}
 #burst-text{font-family:'Pinyon Script',cursive;font-size:clamp(2.5rem,8vw,5rem);color:var(--gold);text-align:center;line-height:1.3;text-shadow:0 0 60px rgba(240,204,128,.5),0 0 120px rgba(240,204,128,.25);transform:scale(.8);transition:transform .6s cubic-bezier(.22,.68,0,1.2)}
 #burst.show #burst-text{transform:scale(1)}
 
-@media(max-width:520px){
-  .msg-card,.reply-card{padding:32px 26px}
+@media(max-width:600px){
+  .msg-card,.reply-card,.prayer-card{padding:32px 26px}
   .glass{padding:44px 28px}
   .float-photo{width:72px;height:72px}
   .choice-grid{gap:9px}
   .choice-btn{font-size:.88rem;padding:13px 10px}
   .heading{font-size:clamp(2.6rem,12vw,4rem)}
-  .share-card{padding:36px 24px}
+  .wall-grid{grid-template-columns:repeat(3,1fr);gap:12px}
+  .share-card{border-radius:2px}
+  .share-inner{padding:36px 24px}
 }
 </style>
 </head>
@@ -242,20 +317,76 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 <!-- BURST -->
 <div id="burst"><div id="burst-text">Thank you, Mama 🌸</div></div>
 
-<!-- SHARE OVERLAY -->
+<!-- ══════════════════════════════
+     PHOTO WALL
+══════════════════════════════ -->
+<div id="photoWall">
+  <div class="wall-title">Our Story</div>
+  <p class="wall-sub">every picture holds a thousand words</p>
+  <div class="wall-grid">
+    <div class="wall-photo-wrap">
+      <img class="wall-photo" id="wallPhoto1" src="photo1.png" alt="">
+      <div class="wall-corner tl"></div><div class="wall-corner tr"></div>
+      <div class="wall-corner bl"></div><div class="wall-corner br"></div>
+    </div>
+    <div class="wall-photo-wrap">
+      <img class="wall-photo" id="wallPhoto2" src="photo2.png" alt="">
+      <div class="wall-corner tl"></div><div class="wall-corner tr"></div>
+      <div class="wall-corner bl"></div><div class="wall-corner br"></div>
+    </div>
+    <div class="wall-photo-wrap">
+      <img class="wall-photo" id="wallPhoto3" src="photo3.png" alt="">
+      <div class="wall-corner tl"></div><div class="wall-corner tr"></div>
+      <div class="wall-corner bl"></div><div class="wall-corner br"></div>
+    </div>
+  </div>
+  <button class="wall-btn" onclick="openShareCard()">Continue 🌸</button>
+</div>
+
+<!-- ══════════════════════════════
+     SHARE OVERLAY — PORTRAIT CARD
+══════════════════════════════ -->
 <div id="shareOverlay">
   <div class="share-card">
-    <span class="share-rose">🌸</span>
-    <div class="share-names">For <span>Mama</span><span class="amp">&</span>Her Daughter</div>
-    <div class="share-divider"></div>
-    <p class="share-section-label his">she said</p>
-    <p class="share-his-quote" id="shareHisQuote">"You gave me everything before I even knew what everything meant."</p>
-    <div class="share-divider"></div>
-    <p class="share-section-label hers">mama said</p>
-    <p class="share-her-quote" id="shareHerQuote">—</p>
-    <p class="share-stamp">— two hearts, one home ♾</p>
-    <p class="share-hint">📸 screenshot this moment</p>
-    <button class="share-close" onclick="closeShare()">Close 🌸</button>
+    <div class="sc-corner tl"></div><div class="sc-corner tr"></div>
+    <div class="sc-corner bl"></div><div class="sc-corner br"></div>
+    <div class="share-inner">
+      <div class="share-glow"><span class="share-glow-icon">🌸</span></div>
+      <div class="share-title">For <span>Mama</span></div>
+      <p class="share-subtitle">a daughter's love · always</p>
+
+      <div class="share-ornament">
+        <div class="share-orn-line"></div>
+        <span class="share-orn-center">✦</span>
+        <div class="share-orn-line rev"></div>
+      </div>
+
+      <div class="share-block">
+        <p class="share-who daughter">she said</p>
+        <p class="share-quote-text daughter" id="shareDaughterQuote">"You gave me everything before I even knew what everything meant."</p>
+      </div>
+
+      <div class="share-ornament">
+        <div class="share-orn-line"></div>
+        <span class="share-orn-center">🌸</span>
+        <div class="share-orn-line rev"></div>
+      </div>
+
+      <div class="share-block">
+        <p class="share-who mama">mama said</p>
+        <p class="share-quote-text mama" id="shareMamaQuote">—</p>
+      </div>
+
+      <div class="share-ornament">
+        <div class="share-orn-line"></div>
+        <span class="share-orn-center">✦</span>
+        <div class="share-orn-line rev"></div>
+      </div>
+
+      <p class="share-stamp">— two hearts, one home · always ♾</p>
+      <p class="share-hint">📸 screenshot this &amp; keep it forever</p>
+      <button class="share-close" onclick="closeShare()">Close 🌸</button>
+    </div>
   </div>
 </div>
 
@@ -320,9 +451,9 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
     <h1 class="heading">Hey, <span>Mama</span> 🌸</h1>
 
     <div class="card-scene" id="cardScene">
-      <img class="float-photo" id="photo1" src="https://picsum.photos/seed/mama1/200/200" alt="">
-      <img class="float-photo" id="photo2" src="https://picsum.photos/seed/family2/200/200" alt="">
-      <img class="float-photo" id="photo3" src="https://picsum.photos/seed/warmth3/200/200" alt="">
+      <img class="float-photo" id="photo1" src="photo1.png" alt="">
+      <img class="float-photo" id="photo2" src="photo2.png" alt="">
+      <img class="float-photo" id="photo3" src="photo3.png" alt="">
       <div class="msg-card">
         <p id="typedText"><span class="cursor"></span></p>
       </div>
@@ -334,6 +465,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
       <div class="sep-line rev"></div>
     </div>
 
+    <!-- ANSWERS -->
     <div class="answers-reveal">
       <span class="reveal-label">you already knew the answers, Mama</span>
       <div class="answers-cards">
@@ -350,6 +482,35 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
       </div>
     </div>
 
+    <!-- PRAYER -->
+    <div class="prayer-section">
+      <div class="prayer-header">
+        <div class="prayer-line"></div>
+        <span class="prayer-label">a prayer for you</span>
+        <div class="prayer-line rev"></div>
+      </div>
+      <div class="prayer-card">
+        <span class="prayer-icon">🕯️</span>
+        <div class="prayer-title">May you be blessed</div>
+        <p class="prayer-text">
+          May every good thing you poured into me<br>
+          <em>return to you a hundredfold.</em><br><br>
+          May the hands that worked so hard<br>
+          finally <em>rest in abundance.</em><br><br>
+          May the prayers you whispered in the dark<br>
+          be answered in the light.<br><br>
+          Know always that you are <em>deeply loved</em> —<br>
+          not just by me,<br>
+          but by every life you’ve touched.<br><br>
+          You deserve <em>every flower, every sunrise,<br>
+          every moment of peace.</em><br><br>
+          Thank you for being my first example of love.
+        </p>
+        <span class="prayer-amen">Amen 🌸</span>
+
+      </div>
+    </div>
+
     <!-- MAMA'S REPLY -->
     <div class="her-reply-section" id="herReplySection">
       <div class="chapter-label">
@@ -357,32 +518,27 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
         <span class="chapter-text">now it's your turn, Mama</span>
         <div class="chapter-line rev"></div>
       </div>
-
       <div class="reply-card" id="replyCard">
         <div id="defaultReply">My baby…
 
 You have no idea how many times I looked at you
-and thought — this one. This one is going to change the world.
+and thought — this one will change the world.
 
-Watching you grow into the person you are
-has been the greatest thing I have ever done.
+Watching you grow has been
+the greatest gift of my life.
 
-I didn't always have the words.
-But I want you to know —
-every sacrifice was made with joy.
+I didn’t always have the words,
+but every sacrifice was made with joy.
 Every late night, every prayer, every tear —
-all of it was for you.
-And I would do it all again without hesitation.
+all for you, and I’d do it again.
 
 I love you more than you will ever know.
-More than I have words for.
-And I am so, so proud of you. 🌸</div>
 
+And I am so, so proud of you. 🌸</div>
         <textarea id="customReplyInput" placeholder="write what's in your heart, Mama…" maxlength="600"></textarea>
         <div id="charCount">0 / 600</div>
         <div class="reply-from">— <span id="replyFromName">Mama</span></div>
       </div>
-
       <div class="reply-actions">
         <button class="reply-action-btn btn-write-own" id="btnWriteOwn" onclick="startWritingOwn()">✏️ Write my own</button>
         <button class="reply-action-btn btn-keep" id="btnKeep" onclick="keepDefault()">Keep this one 🌸</button>
@@ -392,11 +548,11 @@ And I am so, so proud of you. 🌸</div>
       <div class="reply-saved-tag" id="replySavedTag">✓ your reply is saved</div>
     </div>
 
+    <!-- FELT BTN -->
     <div class="felt-btn-wrap">
       <button class="felt-btn" id="feltBtn" onclick="onFelt()">I felt that 🌸</button>
     </div>
-
-    <p class="sign-off">— your daughter, always ♾</p>
+    <p class="sign-off">— your daughter, always ♾ Ellwie</p>
   </div>
 </div>
 
@@ -404,9 +560,8 @@ And I am so, so proud of you. 🌸</div>
 // ══════════════════════════════
 // CONFIG
 // ══════════════════════════════
-const SECRET_CODE  = "myeverything";
-const HER_NAME     = "Mama";
-const HIS_QUOTE    = "You gave me everything before I even knew what everything meant.";
+const SECRET_CODE = "myeverything";
+const DAUGHTER_QUOTE = "You gave me everything before I even knew what everything meant.";
 
 const MESSAGE =
 `There are things I have been meaning to say
@@ -463,7 +618,6 @@ all of it was for you.
 And I would do it all again without hesitation.
 
 I love you more than you will ever know.
-More than I have words for.
 And I am so, so proud of you. 🌸`;
 
 const yesnoQuestions = [
@@ -471,28 +625,20 @@ const yesnoQuestions = [
   {icon:'🕯️',q:'Do you know how much strength you have given?',sub:'think about it',noReaction:"You really don't see it? Try again… 🌸"},
   {icon:'🌼',q:'Do you know that your sacrifices were not invisible?',sub:'they were seen, always',noReaction:"We saw every single one. Say yes 💛"},
   {icon:'🤲',q:'Do you know that someone is proud of you every single day?',sub:'every. single. day.',noReaction:"It's true. Keep going… 🌸"},
-  {icon:'🏡',q:'Do you know that you are someone\'s whole world?',sub:'you always have been',noReaction:"I will keep asking until you believe it ♾"}
+  {icon:'🏡',q:"Do you know that you are someone's whole world?",sub:'you always have been',noReaction:"I will keep asking until you believe it ♾"}
 ];
 
 const choiceQuestions = [
   {
-    icon:'🏡',
-    q:'Just to confirm… where is your daughter\'s first home?',
-    sub:'you already know this one',
-    choices:['Somewhere out there 🌍','Wherever life takes her 🛤️','Right here, with you 🏡','In your arms, always 🌸'],
-    wrongIndices:[0,1],
-    wrongReaction:"Hmm… are you sure about that? 🌼 Try again.",
-    rightReaction:"Yes. Always. 🌸",
+    icon:'🏡',q:"Just to confirm… where is your daughter's first home?",sub:'you already know this one',
+    choices:['Somewhere out there 🌍','Wherever life takes her 🛤️','Right here, with me 🏡','In my arms, always 🌸'],
+    wrongIndices:[0,1],wrongReaction:"Hmm… are you sure? 🌼 Try again.",rightReaction:"Yes. Always. 🌸",
     answerKey:'home',answerDisplay:'ansHome'
   },
   {
-    icon:'🌸',
-    q:'And where did your daughter\'s strength come from?',
-    sub:'she knows the answer',
-    choices:['She figured it out alone 💪','From the world around her 🌍','From watching you, Mama 🌸','From your love and prayers 🤲'],
-    wrongIndices:[0,1],
-    wrongReaction:"Try again, Mama… 💛",
-    rightReaction:"From you. It was always you. 🌸",
+    icon:'🌸',q:"And where did your daughter's strength come from?",sub:'she knows the answer',
+    choices:['She figured it out alone 💪','From the world around her 🌍','From watching me  🌸','From my love and prayers 🤲'],
+    wrongIndices:[0,1],wrongReaction:"Try again, Mama… 💛",rightReaction:"From you. It was always you. 🌸",
     answerKey:'strength',answerDisplay:'ansStrength'
   }
 ];
@@ -503,7 +649,7 @@ const choiceQuestions = [
 let phase='yesno',yesnoIdx=0,choiceIdx=0;
 const collectedAnswers={};
 const TOTAL=yesnoQuestions.length+choiceQuestions.length;
-let finalReply=DEFAULT_REPLY, replySaved=false;
+let finalReply=DEFAULT_REPLY;
 
 // ── INTRO ──
 let introTimer=setTimeout(()=>transitionToGame(),4500);
@@ -553,7 +699,6 @@ function renderQuestion(){
     card.style.opacity='1';card.style.transform='translateY(0)';
   },330);
 }
-
 function renderYesNo(){
   const d=yesnoQuestions[yesnoIdx%yesnoQuestions.length];
   document.getElementById('gameIcon').textContent=d.icon;
@@ -563,7 +708,6 @@ function renderYesNo(){
   document.getElementById('choiceGrid').style.display='none';
   updateDots(yesnoIdx%yesnoQuestions.length);
 }
-
 function renderChoice(){
   const d=choiceQuestions[choiceIdx];
   document.getElementById('gameIcon').textContent=d.icon;
@@ -580,9 +724,7 @@ function renderChoice(){
   });
   updateDots(yesnoQuestions.length+choiceIdx);
 }
-
 function onYes(){phase='choice';choiceIdx=0;renderQuestion();}
-
 function onNo(){
   const d=yesnoQuestions[yesnoIdx%yesnoQuestions.length];
   const r=document.getElementById('reaction');
@@ -594,7 +736,6 @@ function onNo(){
     b.classList.remove('fleeing');b.style.top=b.style.left=b.style.position='';
   },1800);
 }
-
 function runAway(btn){
   const rect=btn.getBoundingClientRect();
   btn.classList.add('fleeing');
@@ -607,7 +748,6 @@ function runAway(btn){
     btn.style.top=ny+'px';btn.style.left=nx+'px';
   });
 }
-
 document.getElementById('btnNo').addEventListener('mousemove',function(e){
   if(this.classList.contains('fleeing'))return;
   const rect=this.getBoundingClientRect();
@@ -627,7 +767,6 @@ document.getElementById('btnNo').addEventListener('mousemove',function(e){
     });
   }
 });
-
 function onChoice(btn,index,data,grid){
   const r=document.getElementById('reaction');
   if(data.wrongIndices.includes(index)){
@@ -640,7 +779,6 @@ function onChoice(btn,index,data,grid){
     setTimeout(()=>{choiceIdx++;choiceIdx<choiceQuestions.length?renderQuestion():goToPassword();},1700);
   }
 }
-
 function goToPassword(){
   document.getElementById('screenGame').classList.add('out');
   setTimeout(()=>{
@@ -653,9 +791,7 @@ function goToPassword(){
     }));
   },1000);
 }
-
 document.getElementById('codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkCode();});
-
 function checkCode(){
   const val=document.getElementById('codeInput').value.trim();
   const err=document.getElementById('err');
@@ -684,7 +820,7 @@ function checkCode(){
   }
 }
 
-// ── HER REPLY ──
+// ── REPLY ──
 function startWritingOwn(){
   document.getElementById('replyCard').classList.add('editing');
   document.getElementById('defaultReply').style.display='none';
@@ -698,18 +834,15 @@ function startWritingOwn(){
   document.getElementById('btnCancelEdit').style.display='inline-flex';
   attachCursorHovers();
 }
-
 document.getElementById('customReplyInput').addEventListener('input',function(){
   const len=this.value.length;
-  const counter=document.getElementById('charCount');
-  counter.textContent=`${len} / 600`;
-  counter.classList.toggle('warn',len>500);
+  const c=document.getElementById('charCount');
+  c.textContent=`${len} / 600`;c.classList.toggle('warn',len>500);
 });
-
 function saveCustomReply(){
   const text=document.getElementById('customReplyInput').value.trim();
   if(!text)return;
-  finalReply=text;replySaved=true;
+  finalReply=text;
   document.getElementById('defaultReply').textContent=text;
   document.getElementById('defaultReply').style.display='block';
   document.getElementById('customReplyInput').style.display='none';
@@ -719,26 +852,22 @@ function saveCustomReply(){
   document.getElementById('btnCancelEdit').style.display='none';
   document.getElementById('btnWriteOwn').style.display='none';
   document.getElementById('btnKeep').style.display='none';
-  const savedTag=document.getElementById('replySavedTag');
-  savedTag.style.display='block';
+  const tag=document.getElementById('replySavedTag');
+  tag.style.display='block';
   const card=document.getElementById('replyCard');
-  card.style.transition='box-shadow .6s ease,border-color .6s ease';
   card.style.borderColor='rgba(240,204,128,.4)';
   card.style.boxShadow='0 0 50px rgba(240,204,128,.1),0 20px 60px rgba(0,0,0,.35)';
 }
-
 function keepDefault(){
-  finalReply=DEFAULT_REPLY;replySaved=true;
+  finalReply=DEFAULT_REPLY;
   document.getElementById('btnWriteOwn').style.display='none';
   document.getElementById('btnKeep').style.display='none';
-  const savedTag=document.getElementById('replySavedTag');
-  savedTag.textContent='✓ reply saved';savedTag.style.display='block';
+  const tag=document.getElementById('replySavedTag');
+  tag.textContent='✓ reply saved';tag.style.display='block';
   const card=document.getElementById('replyCard');
-  card.style.transition='border-color .6s ease,box-shadow .6s ease';
   card.style.borderColor='rgba(240,204,128,.3)';
   card.style.boxShadow='0 0 50px rgba(240,204,128,.08),0 20px 60px rgba(0,0,0,.35)';
 }
-
 function cancelEdit(){
   document.getElementById('defaultReply').style.display='block';
   document.getElementById('customReplyInput').style.display='none';
@@ -750,17 +879,25 @@ function cancelEdit(){
   document.getElementById('btnKeep').style.display='inline-flex';
 }
 
-// ── FELT ──
+// ── FELT → PHOTO WALL → SHARE ──
 function onFelt(){
   const btn=document.getElementById('feltBtn');
   btn.classList.add('clicked');btn.textContent='Always 🌸';
-  document.getElementById('shareHisQuote').textContent=`"${HIS_QUOTE}"`;
-  const preview=finalReply.split('\n').filter(l=>l.trim()).slice(0,3).join(' ').substring(0,120);
-  document.getElementById('shareHerQuote').textContent=`"${preview}…"`;
   burstParticles(window.innerWidth/2,window.innerHeight/2,80);
   const b=document.getElementById('burst');
   b.classList.add('show');
-  setTimeout(()=>{b.classList.remove('show');setTimeout(()=>document.getElementById('shareOverlay').classList.add('show'),400);},2400);
+  setTimeout(()=>{
+    b.classList.remove('show');
+    setTimeout(()=>document.getElementById('photoWall').classList.add('show'),400);
+  },2400);
+}
+function openShareCard(){
+  document.getElementById('photoWall').classList.remove('show');
+  // populate share card
+  document.getElementById('shareDaughterQuote').textContent=`"${DAUGHTER_QUOTE}"`;
+  const preview=finalReply.split('\n').filter(l=>l.trim()).slice(0,3).join(' ').substring(0,120);
+  document.getElementById('shareMamaQuote').textContent=`"${preview}…"`;
+  setTimeout(()=>document.getElementById('shareOverlay').classList.add('show'),600);
 }
 function closeShare(){document.getElementById('shareOverlay').classList.remove('show');}
 
@@ -781,7 +918,7 @@ function startTyping(){
   type();
 }
 
-// ── PHOTOS ──
+// ── FLOATING PHOTOS ──
 function startPhotos(){
   const scene=document.getElementById('cardScene');
   const card=scene.querySelector('.msg-card');
@@ -803,43 +940,32 @@ function startPhotos(){
   show();
 }
 
-// ── AMBIENT ──
+// ── AMBIENT MUSIC ──
 let audioCtx=null,masterGain=null,musicPlaying=false,musicStarted=false;
 const NOTES=[261.63,293.66,329.63,349.23,392,440];
-
 function startAmbient(){
   if(musicStarted)return;musicStarted=true;
   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  masterGain=audioCtx.createGain();
-  masterGain.gain.setValueAtTime(0,audioCtx.currentTime);
+  masterGain=audioCtx.createGain();masterGain.gain.setValueAtTime(0,audioCtx.currentTime);
   masterGain.connect(audioCtx.destination);
-  createDrone(65.41,.035);createDrone(130.81,.02);
+  createDrone(65.41,.03);createDrone(130.81,.018);
   playMelody();fadeMusicIn();musicPlaying=true;
 }
 function createDrone(freq,gain){
-  const osc=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  const f=audioCtx.createBiquadFilter();
-  osc.type='sine';osc.frequency.value=freq;
-  f.type='lowpass';f.frequency.value=400;
-  g.gain.value=gain;
+  const osc=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
+  osc.type='sine';osc.frequency.value=freq;f.type='lowpass';f.frequency.value=400;g.gain.value=gain;
   osc.connect(f);f.connect(g);g.connect(masterGain);osc.start();
 }
 function playMelody(){
   if(!audioCtx||!musicPlaying)return;
   const note=NOTES[Math.floor(Math.random()*NOTES.length)];
-  const osc=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  const f=audioCtx.createBiquadFilter();
+  const osc=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
   osc.type='triangle';osc.frequency.value=note*(Math.random()<.25?2:1);
   f.type='lowpass';f.frequency.value=900;
   const now=audioCtx.currentTime;
-  g.gain.setValueAtTime(0,now);
-  g.gain.linearRampToValueAtTime(.055,now+1);
-  g.gain.linearRampToValueAtTime(0,now+5);
-  osc.connect(f);f.connect(g);g.connect(masterGain);
-  osc.start(now);osc.stop(now+5.5);
-  setTimeout(()=>playMelody(),3000+Math.random()*4000);
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.05,now+1.2);g.gain.linearRampToValueAtTime(0,now+5.5);
+  osc.connect(f);f.connect(g);g.connect(masterGain);osc.start(now);osc.stop(now+6);
+  setTimeout(()=>playMelody(),3200+Math.random()*4000);
 }
 function fadeMusicIn(){masterGain.gain.cancelScheduledValues(audioCtx.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,audioCtx.currentTime);masterGain.gain.linearRampToValueAtTime(1,audioCtx.currentTime+3);}
 function fadeMusicOut(){masterGain.gain.cancelScheduledValues(audioCtx.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,audioCtx.currentTime);masterGain.gain.linearRampToValueAtTime(0,audioCtx.currentTime+1.5);}
@@ -849,7 +975,7 @@ function toggleMusic(){
   else{fadeMusicIn();musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';playMelody();}
 }
 
-// ── PARTICLES (warm golden petals) ──
+// ── PARTICLES ──
 const canvas=document.getElementById('canvas');
 const ctx=canvas.getContext('2d');
 let W,H,particles=[];
@@ -858,7 +984,7 @@ resize();addEventListener('resize',resize);
 function rand(a,b){return a+Math.random()*(b-a);}
 function mkP(){
   const star=Math.random()<.15;
-  return{x:rand(0,W),y:rand(H+10,H+80),size:rand(3,star?10:6),speedY:rand(.25,.9),speedX:rand(-.18,.18),opacity:rand(.05,.28),type:star?'star':'petal',rotation:rand(0,Math.PI*2),rotSpeed:rand(-.012,.012),wobble:rand(0,Math.PI*2),wobbleSpeed:rand(.008,.022),burst:false};
+  return{x:rand(0,W),y:rand(H+10,H+80),size:rand(3,star?10:6),speedY:rand(.25,.9),speedX:rand(-.18,.18),opacity:rand(.05,.25),type:star?'star':'petal',rotation:rand(0,Math.PI*2),rotSpeed:rand(-.012,.012),wobble:rand(0,Math.PI*2),wobbleSpeed:rand(.008,.022),burst:false};
 }
 function burstParticles(x,y,count){
   for(let i=0;i<count;i++){
@@ -869,14 +995,12 @@ function burstParticles(x,y,count){
 function drawStar(x,y,s,o,r){
   ctx.save();ctx.translate(x,y);ctx.rotate(r);ctx.globalAlpha=o;ctx.fillStyle=`hsl(${rand(38,52)},85%,72%)`;
   ctx.beginPath();
-  for(let i=0;i<5;i++){
-    ctx.lineTo(Math.cos((i*4*Math.PI/5)-Math.PI/2)*s,Math.sin((i*4*Math.PI/5)-Math.PI/2)*s);
-  }
+  for(let i=0;i<5;i++)ctx.lineTo(Math.cos((i*4*Math.PI/5)-Math.PI/2)*s,Math.sin((i*4*Math.PI/5)-Math.PI/2)*s);
   ctx.closePath();ctx.fill();ctx.restore();
 }
 function drawPetal(x,y,s,o,r){
   ctx.save();ctx.translate(x,y);ctx.rotate(r);ctx.globalAlpha=o;
-  ctx.fillStyle=`hsl(${rand(30,48)},70%,72%)`;
+  ctx.fillStyle=`hsl(${rand(30,50)},68%,70%)`;
   ctx.beginPath();ctx.ellipse(0,0,s*.35,s,0,0,Math.PI*2);ctx.fill();ctx.restore();
 }
 for(let k=0;k<32;k++){const p=mkP();p.y=rand(0,H);particles.push(p);}
@@ -898,14 +1022,14 @@ const cur=document.getElementById('cursor');
 const ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function trackRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(trackRing);})();
+(function tr(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tr);})();
 const observer=new MutationObserver(()=>attachCursorHovers());
 observer.observe(document.body,{childList:true,subtree:true});
 function attachCursorHovers(){
   document.querySelectorAll('button,input,textarea').forEach(el=>{
     if(el._ch)return;el._ch=true;
     el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='52px';ring.style.height='52px';});
-    el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='36px';ring.style.height='32px';});
+    el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='36px';ring.style.height='36px';});
   });
 }
 attachCursorHovers();
